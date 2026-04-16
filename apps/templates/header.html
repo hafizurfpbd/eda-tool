@@ -20,12 +20,15 @@
 
 <nav class="navbar navbar-success bg-success">
   <div class="container-fluid">
-			<div class="col-sm-6">
-				<div style="float:left;padding:5px;"><img src="https://jnuadmission.com/logo/jnulogo.jpg" style="height:55px;"></div>
-			    <div style="padding-top:5px;font-size:20px;color:white;font-weight:bold;">EDA Tool</div>
+			<div class="col-sm-8">
+				<div style="float:left;padding:5px;">
+          <div style="padding-top:5px;font-size:20px;color:white;font-weight:bold;">
+            📊 EDA-Tool: <br>
+            A Web-Based Automated Exploratory Data Analysis System
+          </div>
 			</div>
 			
-            <div class="col-sm-6" style="text-align:right;">
+            <div class="col-sm-4" style="text-align:right;">
             </div>
         </div>
 </nav>
@@ -37,12 +40,10 @@
 
 	
 		<div class="list-group">
-       <a href="https://jnuadmission.com/adminx/home/10001/6c447a8fe7677ddc4c4cd2efddcfe650e4e6c706.jsp" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-bank"></i> Dashboard </a>
-       <a href="https://jnuadmission.com/adminx/complain/10001/6c447a8fe7677ddc4c4cd2efddcfe650e4e6c706.jsp" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Complain Box </a>
-       <a href="https://jnuadmission.com/adminx/applicantlists/10001/6c447a8fe7677ddc4c4cd2efddcfe650e4e6c706.jsp" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Applicant Data </a>
-       
-        <hr>
-        <a href="https://jnuadmission.com/portal/logout/c780de0d3ac3c245b859f5a2b8e4782ec30f8e3d.jsp" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-box-arrow-left"></i> Logout</a>
-       </div> 
-		
+       <a href="/dashboard" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-bank"></i> Dashboard </a>
+       <a href="/dataupload" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Data Upload </a>
+
+       <a href="{{ url_for('dataprofiling') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Data Profiling </a>
     </div>
+
+  </div>
