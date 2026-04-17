@@ -23,7 +23,7 @@ async def dashboard(request: Request, name: Optional[str] = None):
 
 @app.get("/dataupload", response_class=HTMLResponse, name="dataupload")
 async def dataupload(request: Request, name: Optional[str] = None):
-    return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
+    return templates.TemplateResponse(request=request, name="data-upload.html",context={"name":name})
 
 
 @app.get("/dataprofiling", response_class=HTMLResponse, name="dataprofiling")
