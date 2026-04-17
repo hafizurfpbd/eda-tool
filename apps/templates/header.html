@@ -42,8 +42,17 @@
 		<div class="list-group">
        <a href="/dashboard" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-bank"></i> Dashboard </a>
        <a href="/dataupload" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Data Upload </a>
+      <a href="{{ url_for('dataprofiling') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Data Profiling </a>
 
-       <a href="{{ url_for('dataprofiling') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Data Profiling </a>
+      <a href="{{ url_for('univariate-analysis') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Univariate Analysis </a>
+      <a href="{{ url_for('bivariate-analysis') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Bivariate Analysis </a>
+      <a href="{{ url_for('multivariate-analysis') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Multivariate Analysis </a>
+      
+      <a href="{{ url_for('outier-detection') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Outlier Detection </a>
+
+      <a href="{{ url_for('visualization') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Visualization </a>
+      <hr>
+
     </div>
 
   </div>

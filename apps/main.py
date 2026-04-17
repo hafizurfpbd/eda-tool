@@ -18,14 +18,41 @@ async def home(request: Request, name: Optional[str] = None):
     return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
 
 @app.get("/dashboard", response_class=HTMLResponse)
-async def home(request: Request, name: Optional[str] = None):
+async def dashboard(request: Request, name: Optional[str] = None):
     return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
 
 @app.get("/dataupload", response_class=HTMLResponse, name="dataupload")
-async def home(request: Request, name: Optional[str] = None):
+async def dataupload(request: Request, name: Optional[str] = None):
     return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
 
 
 @app.get("/dataprofiling", response_class=HTMLResponse, name="dataprofiling")
-async def home(request: Request, name: Optional[str] = None):
+async def dataprofiling(request: Request, name: Optional[str] = None):
     return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
+
+
+@app.get("/univariate-analysis", response_class=HTMLResponse, name="univariate-analysis")
+async def univariateanalysis(request: Request, name: Optional[str] = None):
+    return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
+
+@app.get("/bivariate-analysis", response_class=HTMLResponse, name="bivariate-analysis")
+async def bivariateanalysis(request: Request, name: Optional[str] = None):
+    return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
+
+
+@app.get("/multivariate-analysis", response_class=HTMLResponse, name="multivariate-analysis")
+async def multivariateanalysis(request: Request, name: Optional[str] = None):
+    return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
+
+
+@app.get("/outier-detection", response_class=HTMLResponse, name="outier-detection")
+async def outierdetection(request: Request, name: Optional[str] = None):
+    return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
+
+@app.get("/visualization", response_class=HTMLResponse, name="visualization")
+async def visualization(request: Request, name: Optional[str] = None):
+    return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
+
+
+
+
