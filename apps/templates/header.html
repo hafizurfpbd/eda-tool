@@ -23,7 +23,7 @@
 			<div class="col-sm-8">
 				<div style="float:left;padding:5px;">
           <div style="padding-top:5px;font-size:20px;color:white;font-weight:bold;">
-            📊 EDA-Tool:<br> {{ request.scope.get("route").name }}
+            📊 EDA-Tool: {{ request.scope.get("route").name.replace("-"," ").capitalize() }} <br> 
             A Web-Based Automated Exploratory Data Analysis System
           </div>
 			</div>
@@ -43,10 +43,10 @@
        <a href="/dashboard" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-bank"></i> Dashboard </a>
        <a href="/dataupload" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Data Upload </a>
 
-      {% if request.scope.get("route").name == 'dataprofiling' %}
-          <a href="{{ url_for('dataprofiling') }}" class="list-group-item list-group-item-success list-group-item-action active"> <i class="bi bi-check2-square"></i> Data Profiling </a>
+      {% if request.scope.get("route").name == 'data-profiling' %}
+          <a href="{{ url_for('data-profiling') }}" class="list-group-item list-group-item-success list-group-item-action active"> <i class="bi bi-check2-square"></i> Data Profiling </a>
       {% else %}
-          <a href="{{ url_for('dataprofiling') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Data Profiling </a>
+          <a href="{{ url_for('data-profiling') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Data Profiling </a>
       {% endif %}
 
       <a href="{{ url_for('univariate-analysis') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Univariate Analysis </a>
