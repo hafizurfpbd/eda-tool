@@ -41,7 +41,14 @@
 	
 		<div class="list-group">
        <a href="/dashboard" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-bank"></i> Dashboard </a>
-       <a href="/dataupload" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Data Upload </a>
+
+
+       {% if request.scope.get("route").name == 'dataupload' %}
+       <a href="/dataupload" class="list-group-item list-group-item-success list-group-item-action active"> <i class="bi bi-check2-square"></i> Data Upload </a>
+       {% else %}
+      <a href="/dataupload" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Data Upload </a>
+       {% endif %}
+
 
       {% if request.scope.get("route").name == 'data-profiling' %}
           <a href="{{ url_for('data-profiling') }}" class="list-group-item list-group-item-success list-group-item-action active"> <i class="bi bi-check2-square"></i> Data Profiling </a>
@@ -49,17 +56,42 @@
           <a href="{{ url_for('data-profiling') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Data Profiling </a>
       {% endif %}
 
+
+      {% if request.scope.get("route").name == 'univariate-analysis' %}
+      <a href="{{ url_for('univariate-analysis') }}" class="list-group-item list-group-item-success list-group-item-action active"> <i class="bi bi-check2-square"></i> Univariate Analysis </a>
+      {% else %}
       <a href="{{ url_for('univariate-analysis') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Univariate Analysis </a>
+      {% endif %}
 
+
+      {% if request.scope.get("route").name == 'bivariate-analysis' %}
+      <a href="{{ url_for('bivariate-analysis') }}" class="list-group-item list-group-item-success list-group-item-action active"> <i class="bi bi-check2-square"></i> Bivariate Analysis </a>
+       {% else %}
       <a href="{{ url_for('bivariate-analysis') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Bivariate Analysis </a>
+       {% endif %}
+     
 
+
+      {% if request.scope.get("route").name == 'multivariate-analysis' %}
+       <a href="{{ url_for('multivariate-analysis') }}" class="list-group-item list-group-item-success list-group-item-action active"> <i class="bi bi-check2-square"></i> Multivariate Analysis </a>
+       {% else %}
       <a href="{{ url_for('multivariate-analysis') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Multivariate Analysis </a>
-
+       {% endif %}
       
+
+      {% if request.scope.get("route").name == 'outier-detection' %}
+      <a href="{{ url_for('outier-detection') }}" class="list-group-item list-group-item-success list-group-item-action active"> <i class="bi bi-check2-square"></i> Outlier Detection </a>
+       {% else %}
       <a href="{{ url_for('outier-detection') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Outlier Detection </a>
+       {% endif %}
+      
 
-
-      <a href="{{ url_for('visualization') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Visualization </a>
+      {% if request.scope.get("route").name == 'visualization' %}
+      <a href="{{ url_for('visualization') }}" class="list-group-item list-group-item-success list-group-item-action active"> <i class="bi bi-check2-square"></i> Visualization </a>
+       {% else %}
+       <a href="{{ url_for('visualization') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Visualization </a>
+       {% endif %}
+      
       <hr>
 
     </div>
