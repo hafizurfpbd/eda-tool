@@ -23,7 +23,7 @@
 			<div class="col-sm-8">
 				<div style="float:left;padding:5px;">
           <div style="padding-top:5px;font-size:20px;color:white;font-weight:bold;">
-            📊 EDA-Tool: <br>
+            📊 EDA-Tool:<br> {{ request.scope.get("route").name }}
             A Web-Based Automated Exploratory Data Analysis System
           </div>
 			</div>
@@ -42,13 +42,22 @@
 		<div class="list-group">
        <a href="/dashboard" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-bank"></i> Dashboard </a>
        <a href="/dataupload" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Data Upload </a>
-      <a href="{{ url_for('dataprofiling') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Data Profiling </a>
+
+      {% if request.scope.get("route").name == 'dataprofiling' %}
+          <a href="{{ url_for('dataprofiling') }}" class="list-group-item list-group-item-success list-group-item-action active"> <i class="bi bi-check2-square"></i> Data Profiling </a>
+      {% else %}
+          <a href="{{ url_for('dataprofiling') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Data Profiling </a>
+      {% endif %}
 
       <a href="{{ url_for('univariate-analysis') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Univariate Analysis </a>
+
       <a href="{{ url_for('bivariate-analysis') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Bivariate Analysis </a>
+
       <a href="{{ url_for('multivariate-analysis') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Multivariate Analysis </a>
+
       
       <a href="{{ url_for('outier-detection') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Outlier Detection </a>
+
 
       <a href="{{ url_for('visualization') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Visualization </a>
       <hr>
@@ -56,3 +65,50 @@
     </div>
 
   </div>
+
+  <div class="col-sm-10 text-left cl-body"  style="background-color:#FFFFFF;"> 
+		<div class='col-sm-12'>  
+		 <div class="panel panel-primary">
+		      
+
+<!--
+<div class="alert alert-danger">
+  <div class="stepper">
+    <div class="step completed">
+      <div class="step-circle">1</div>
+      <small>Upload</small>
+    </div>
+
+  
+    <div class="step completed">
+      <div class="step-circle">2</div>
+      <small>Data Profiling</small>
+    </div>
+
+    <div class="step active">
+      <div class="step-circle">3</div>
+      <small>Univariate Analysis</small>
+    </div>
+
+    <div class="step">
+      <div class="step-circle">5</div>
+      <small>Bivariate Analysis</small>
+    </div>
+
+    <div class="step">
+      <div class="step-circle">6</div>
+      <small>Multivariate Analysis</small>
+    </div>
+
+    <div class="step">
+      <div class="step-circle">7</div>
+      <small>Outlier Detection</small>
+    </div>
+
+    <div class="step">
+      <div class="step-circle">8</div>
+      <small>Visualization</small>
+    </div>
+  </div>
+</div>
+-->
