@@ -1,7 +1,46 @@
 {% include 'header.html' %}
     <div class="panel-body">
-                 
-                  
-                
+               
+    <form action="{{ url_for('dataupload') }}" method="POST" enctype="multipart/form-data">
+     <div class='row'>                     
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white" style='font-size:17px;font-weight:bold;'>
+                         {{ request.scope.get("route").name.replace("-"," ").capitalize() }}
+                     </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <td>
+                                  Project ID {{message}}
+                                </td>
+                                <td>
+                                  <input type="text" name='project_id' id='project_id' required class="form-control" placeholder="Project ID">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                  Select CSV File
+                                </td>
+                                <td>
+                                  <input type="file" name='csv_file' id='csv_file' required class="form-control" accept=".csv">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2" style="border:none;">
+                                  <button type="submit" class="btn btn-success">Upload</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+      </div>                            
+      
+
+    </form>
+  </div> 
+  
     </div>
 {% include 'footer.html' %}
