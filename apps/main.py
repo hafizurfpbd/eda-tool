@@ -12,6 +12,7 @@ import json
 from utils.json_handler import MetadataStore
 from utils.descriptive import Descriptive
 import pandas
+import statistics
 
 
 app = FastAPI(Debug=True)
@@ -105,15 +106,17 @@ async def dataprofiling(request: Request, name: Optional[str] = None):
     project_file = json.load(open("metadata/assign-project.json"))
     data=None
     columns=None
+    process_data=None
     dprofiling=Descriptive()
 
     if project_file:
         source_file=os.path.join('uploads',project_file[0]['file_name'])
         try:
             pddata=pandas.read_csv(source_file, header=0)
-            pddata=pddata.sample(15)
-            data = pddata.to_dict('records')
+            pddata_10=pddata.sample(10)
+            data = pddata_10.to_dict('records')
             columns = pddata.columns.tolist()
+            process_data=dprofiling.analysis(pddata)
         except Exception as e:
             message = f"Error reading file"
 
@@ -123,7 +126,8 @@ async def dataprofiling(request: Request, name: Optional[str] = None):
         context={
             "project_file":project_file,
             "data": data,
-            "columns": columns
+            "columns": columns,
+            "pdf": process_data
             }
         )
 
