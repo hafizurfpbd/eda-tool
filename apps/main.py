@@ -8,8 +8,10 @@ from typing import Optional, List
 import shutil
 import uuid
 import os
+import json
 from utils.json_handler import MetadataStore
-
+from utils.descriptive import Descriptive
+import pandas
 
 
 app = FastAPI(Debug=True)
@@ -27,10 +29,17 @@ store = MetadataStore()
 async def home(request: Request, name: Optional[str] = None):
     return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
 
-@app.get("/dashboard", response_class=HTMLResponse)
-async def dashboard(request: Request):
+@app.get("/dashboard", response_class=HTMLResponse,name="dashboard")
+async def dashboard(request: Request,project_id: Optional[str] = None):
     csv_data=store.get_all()
-    return templates.TemplateResponse(request=request, name="dashboard.html",context={"csv_data":csv_data})
+
+    status_message=None
+    if project_id:
+        assign_data=store.search('project_id',project_id)
+        with open("metadata/assign-project.json", "w") as f: json.dump(assign_data, f, indent=2)
+        status_message="Successfully project assigned"
+    
+    return templates.TemplateResponse(request=request, name="dashboard.html",context={"csv_data":csv_data,"project_id":project_id,"status_message":status_message})
 
 
 
@@ -90,10 +99,33 @@ async def dataupload_post(request: Request,csv_file: UploadFile = File(...)):
     )
 
 
-
 @app.get("/data-profiling", response_class=HTMLResponse, name="data-profiling")
 async def dataprofiling(request: Request, name: Optional[str] = None):
-    return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
+    
+    project_file = json.load(open("metadata/assign-project.json"))
+    data=None
+    columns=None
+    dprofiling=Descriptive()
+
+    if project_file:
+        source_file=os.path.join('uploads',project_file[0]['file_name'])
+        try:
+            pddata=pandas.read_csv(source_file, header=0)
+            pddata=pddata.sample(15)
+            data = pddata.to_dict('records')
+            columns = pddata.columns.tolist()
+        except Exception as e:
+            message = f"Error reading file"
+
+    return templates.TemplateResponse(
+        request=request, 
+        name="data-profiling.html",
+        context={
+            "project_file":project_file,
+            "data": data,
+            "columns": columns
+            }
+        )
 
 
 @app.get("/univariate-analysis", response_class=HTMLResponse, name="univariate-analysis")

@@ -33,3 +33,19 @@ class MetadataStore:
 
     def get_all(self):
         return self._read()
+
+    def search(self, key: str, value: str):
+        data = self._read()
+
+        results = []
+        for item in data:
+            if key in item and str(item[key]).lower() == value.lower():
+                results.append(item)
+
+        return results
+
+
+
+
+
+

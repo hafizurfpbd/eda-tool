@@ -8,6 +8,12 @@
                      </div>
                     <div class="card-body">
 
+                    {% if status_message %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                          {{ status_message}}
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
 
                     {% if csv_data %}
                     <table class="table table-boardered" style="font-size:13px;">
@@ -24,7 +30,9 @@
                         <tbody>
                             {% for d in csv_data %}
                             <tr>
-                                <td>{{ d["project_id"] }}</td>
+                                <td>{{ d["project_id"] }}<br>
+                                    <a href="/dashboard?project_id={{d['project_id'] }}" style="font-size:10px;text-decoration: none;" onclick="return confirm('Are you sure assign project name: {{ d['project_name'] }} ')">Click to Assign Project</a>
+                                </td>
                                 <td>{{ d["project_name"] }}</td>
                                 <td>{{ d["mime_type"] }}</td>
                                 <td>{{ d["file_size"] }}</td>

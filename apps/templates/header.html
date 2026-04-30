@@ -40,7 +40,7 @@
 
 	
 		<div class="list-group">
-       <a href="/dashboard" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-bank"></i> Dashboard </a>
+       <a href="{{ url_for('dashboard') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-bank"></i> Dashboard </a>
 
 
        {% if request.scope.get("route").name == 'dataupload' %}

@@ -1,7 +1,42 @@
 {% include 'header.html' %}
     <div class="panel-body">
-                 
-                  
-                
+    <div class='row'>                     
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white" style='font-size:17px;font-weight:bold;'>
+                         {{ request.scope.get("route").name.replace("-"," ").capitalize() }}
+                     </div>
+                    <div class="card-body table-responsive">
+
+                        <table class="table table-bordered" style="font-size: 10px;">
+                            {% if columns %}
+                            <thead>
+                                <tr>
+                                    {% for col in columns %}
+                                    <th>{{ col }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            {% endif %}
+
+                            {% if data %}
+                            <tbody>
+                                {% for row in data %}
+                                <tr>
+                                    {% for col in columns %}
+                                    <td>{{ row[col] }}</td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            {% endif %}
+                            
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+      </div>          
     </div>
 {% include 'footer.html' %}
+
