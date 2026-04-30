@@ -1,0 +1,18 @@
+[
+    {
+        "project_id": "P001",
+        "project_name": "Complete Blood Cell",
+        "file_name": "uploads/P001_cbc.csv",
+        "mime_type": "text/csv",
+        "file_size": 10285,
+        "created_at": "2026-04-30T08:45:56.105688"
+    },
+    {
+        "project_id": "P002",
+        "project_name": "Air Quality",
+        "file_name": "uploads/P002_air-quality.csv",
+        "mime_type": "text/csv",
+        "file_size": 113116,
+        "created_at": "2026-04-30T08:46:09.531769"
+    }
+]

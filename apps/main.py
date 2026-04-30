@@ -8,6 +8,8 @@ from typing import Optional, List
 import shutil
 import uuid
 import os
+from utils.json_handler import MetadataStore
+
 
 
 app = FastAPI(Debug=True)
@@ -15,9 +17,11 @@ app = FastAPI(Debug=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
-templates.env.cache_size = 0  # cache error fix
+#templates.env.cache_size = 0  # cache error fix
 
 UPLOAD_DIR = Path("uploads")
+store = MetadataStore()
+
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request, name: Optional[str] = None):
@@ -37,6 +41,7 @@ async def dataupload_post(request: Request,csv_file: UploadFile = File(...)):
     
     form = await request.form()
     project_id=form.get("project_id")
+    project_name=form.get("project_name")
     # Ensure upload directory exists
     os.makedirs(UPLOAD_DIR, exist_ok=True)
 
@@ -58,6 +63,14 @@ async def dataupload_post(request: Request,csv_file: UploadFile = File(...)):
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(csv_file.file, buffer)
         message = f"{csv_file.filename} uploaded and saved successfully!"
+
+        store.add({
+            "project_id": project_id,
+            "project_name": project_name,
+            "file_name": file_path,
+            "mime_type": csv_file.content_type,
+            "file_size": os.path.getsize(file_path)
+        })
 
     except Exception as e:
         message = f"Error saving file: {str(e)}"

@@ -12,10 +12,18 @@
                         <table class="table">
                             <tr>
                                 <td>
-                                  Project ID {{message}}
+                                  Project ID
                                 </td>
                                 <td>
                                   <input type="text" name='project_id' id='project_id' required class="form-control" placeholder="Project ID">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                  Project Name
+                                </td>
+                                <td>
+                                  <input type="text" name='project_name' id='project_name' required class="form-control" placeholder="Project Name">
                                 </td>
                             </tr>
                             <tr>
@@ -32,6 +40,15 @@
                                   <button type="submit" class="btn btn-success">Upload</button>
                                 </td>
                             </tr>
+                            {% if message %}
+                            <tr>
+                                <td colspan="2" style="border:none;">
+                                    <div class="alert alert-danger">
+                                        {{message}}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endif %}
                         </table>
                     </div>
                 </div>
