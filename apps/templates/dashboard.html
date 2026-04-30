@@ -1,8 +1,46 @@
 {% include 'header.html' %}
     <div class="panel-body">
-                 
-                  
-                
+    <div class='row'>                     
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white" style='font-size:17px;font-weight:bold;'>
+                         {{ request.scope.get("route").name.replace("-"," ").capitalize() }}
+                     </div>
+                    <div class="card-body">
+
+
+                    {% if csv_data %}
+                    <table class="table table-boardered" style="font-size:13px;">
+                        <thead>
+                            <tr>
+                                <th>Project Id</th>
+                                <th>Project Name</th>
+                                <th>File Type</th>
+                                <th>File Size</th>
+                                <th>Location</th>
+                                <th>Date Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for d in csv_data %}
+                            <tr>
+                                <td>{{ d["project_id"] }}</td>
+                                <td>{{ d["project_name"] }}</td>
+                                <td>{{ d["mime_type"] }}</td>
+                                <td>{{ d["file_size"] }}</td>
+                                <td>{{ d["file_name"] }}</td>
+                                <td>{{ d["created_at"] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p>No data available</p>
+                    {% endif %}     
+                    </div>
+                </div>
+            </div>
+      </div>          
     </div>
 {% include 'footer.html' %}
 

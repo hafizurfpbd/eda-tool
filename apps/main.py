@@ -28,8 +28,11 @@ async def home(request: Request, name: Optional[str] = None):
     return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
 
 @app.get("/dashboard", response_class=HTMLResponse)
-async def dashboard(request: Request, name: Optional[str] = None):
-    return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
+async def dashboard(request: Request):
+    csv_data=store.get_all()
+    return templates.TemplateResponse(request=request, name="dashboard.html",context={"csv_data":csv_data})
+
+
 
 @app.get("/dataupload", response_class=HTMLResponse, name="dataupload")
 async def dataupload(request: Request, name: Optional[str] = None):
@@ -67,7 +70,7 @@ async def dataupload_post(request: Request,csv_file: UploadFile = File(...)):
         store.add({
             "project_id": project_id,
             "project_name": project_name,
-            "file_name": file_path,
+            "file_name": unique_filename,
             "mime_type": csv_file.content_type,
             "file_size": os.path.getsize(file_path)
         })
