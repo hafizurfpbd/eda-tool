@@ -5,7 +5,8 @@
             display: flex;
             background: #f8f9fa;
             border-bottom: 2px solid #e9ecef;
-            padding: 0 20px;
+            /*padding: 0 20px; */
+            padding-bottom: 10px;
             gap: 5px;
         }
         
@@ -145,11 +146,11 @@
                      </div>
                     <div class="card-body table-responsive">
                         <div class="tab-menu">
-                            <a href='#' style='text-decoration: none;' class="tab-btn active" data-tab="overview">📊 Data Sample</a>
-                            <a href='#' style='text-decoration: none;'  class="tab-btn" data-tab="statistics">📈 Statistics</a>
-                            <a href='#' style='text-decoration: none;'  class="tab-btn" data-tab="missing">🔍 Missing Values</a>
-                            <a  style='text-decoration: none;'  class="tab-btn" data-tab="correlation">📉 Description</a>
-                            <a  style='text-decoration: none;'  class="tab-btn" data-tab="sample">📋 Summary</a>
+                            <a href="/data-profiling?parameter=sample-data" style='text-decoration: none;' class="tab-btn active" data-tab="overview">📊 Data Sample</a>
+                            <a href="/data-profiling?parameter=statistics" style='text-decoration: none;'  class="tab-btn" data-tab="statistics">📈 Statistics</a>
+                            <a href="/data-profiling?parameter=missing-value" style='text-decoration: none;'  class="tab-btn" data-tab="missing">🔍 Missing Values</a>
+                            <a href="/data-profiling?parameter=description" style='text-decoration: none;'  class="tab-btn" data-tab="description">📉 Description</a>
+                            <a href="/data-profiling?parameter=summary" style='text-decoration: none;'  class="tab-btn" data-tab="summary">📋 Summary</a>
                         </div>
                         <table class="table table-bordered" style="font-size: 10px;">
                             {% if columns %}

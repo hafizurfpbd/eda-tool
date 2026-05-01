@@ -101,7 +101,7 @@ async def dataupload_post(request: Request,csv_file: UploadFile = File(...)):
 
 
 @app.get("/data-profiling", response_class=HTMLResponse, name="data-profiling")
-async def dataprofiling(request: Request, name: Optional[str] = None):
+async def dataprofiling(request: Request, parameter: Optional[str] = None):
     
     project_file = json.load(open("metadata/assign-project.json"))
     data=None
