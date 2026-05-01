@@ -113,10 +113,22 @@ async def dataprofiling(request: Request, parameter: Optional[str] = None):
         source_file=os.path.join('uploads',project_file[0]['file_name'])
         try:
             pddata=pandas.read_csv(source_file, header=0)
-            pddata_10=pddata.sample(10)
-            data = pddata_10.to_dict('records')
-            columns = pddata.columns.tolist()
-            process_data=dprofiling.analysis(pddata)
+            if parameter=='sample-data':
+                pddata_10=pddata.sample(10)
+                data = pddata_10.to_dict('records')
+                columns = pddata.columns.tolist()
+            elif parameter=='statistics':
+                process_data=dprofiling.analysis(pddata)
+            elif parameter=='missing-value':
+                process_data=None
+            elif parameter=='description':
+                process_data=None
+            elif parameter=='summary':
+                process_data=None
+            else:
+                pddata_10=pddata.sample(10)
+                data = pddata_10.to_dict('records')
+                columns = pddata.columns.tolist()
         except Exception as e:
             message = f"Error reading file"
 
