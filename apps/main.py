@@ -119,12 +119,18 @@ async def dataprofiling(request: Request, parameter: Optional[str] = None):
                 columns = pddata.columns.tolist()
             elif parameter=='statistics':
                 process_data=dprofiling.analysis(pddata)
+                data = process_data.to_dict('records')
+                columns = process_data.columns.tolist()
             elif parameter=='missing-value':
                 process_data=None
             elif parameter=='description':
-                process_data=None
+                process_data=pddata.info()
+                data = process_data.to_dict('records')
+                columns = process_data.columns.tolist()
             elif parameter=='summary':
-                process_data=None
+                process_data=pddata.describe()
+                data = process_data.to_dict('records')
+                columns = process_data.columns.tolist()
             else:
                 pddata_10=pddata.sample(10)
                 data = pddata_10.to_dict('records')
