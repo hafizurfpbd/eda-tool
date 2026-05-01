@@ -114,27 +114,20 @@ async def dataprofiling(request: Request, parameter: Optional[str] = None):
         try:
             pddata=pandas.read_csv(source_file, header=0)
             if parameter=='sample-data':
-                pddata_10=pddata.sample(10)
-                data = pddata_10.to_dict('records')
-                columns = pddata.columns.tolist()
+                process_data=pddata.sample(10).to_html(classes="table table-striped custom-table")
             elif parameter=='statistics':
-                process_data=dprofiling.analysis(pddata)
-                data = process_data.to_dict('records')
-                columns = process_data.columns.tolist()
-            elif parameter=='missing-value':
-                process_data=None
+                process_data=dprofiling.analysis(pddata).to_html(classes="table table-striped custom-table")
             elif parameter=='description':
-                process_data=pddata.info()
-                data = process_data.to_dict('records')
-                columns = process_data.columns.tolist()
+                info_df = pandas.DataFrame({
+                    "Column": pddata.columns,
+                    "Non-Null Count": pddata.notnull().sum().values,
+                    "Data Type": pddata.dtypes.values
+                })
+                process_data=info_df.to_html(classes="table table-striped custom-table")
             elif parameter=='summary':
-                process_data=pddata.describe()
-                data = process_data.to_dict('records')
-                columns = process_data.columns.tolist()
+                process_data=pddata.describe().to_html(classes="table table-striped custom-table")
             else:
-                pddata_10=pddata.sample(10)
-                data = pddata_10.to_dict('records')
-                columns = pddata.columns.tolist()
+                process_data=pddata.sample(10).to_html(classes="table table-striped custom-table")
         except Exception as e:
             message = f"Error reading file"
 
@@ -143,6 +136,7 @@ async def dataprofiling(request: Request, parameter: Optional[str] = None):
         name="data-profiling.html",
         context={
             "project_file":project_file,
+            "parameter":parameter,
             "data": data,
             "columns": columns,
             "pdf": process_data
