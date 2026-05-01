@@ -1,17 +1,18 @@
-    {% include 'header.html' %}
-    <div class="col-sm-10 text-left cl-body"  style="background-color:#FFFFFF;"> 
-		<div class='col-sm-12'>  
-		 <div class="panel panel-primary">
-		      
-		      <div class="panel-body">
-                 
-                  
-                
-          </div>
-      </div>
-		</div>
-	</div>
-  </div>
-</div>
-{% include 'footer.html' %}
+{% include 'header.html' %}
+    <div class="panel-body">         
+        <div class='row'>                     
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white" style='font-size:17px;font-weight:bold;'>
+                         {{ request.scope.get("route").name.replace("-"," ").capitalize() }}
+                     </div>
+                    <div class="card-body table-responsive">
+                        
 
+                      
+                    </div>
+                </div>
+            </div>
+        </div>           
+    </div>
+{% include 'footer.html' %}

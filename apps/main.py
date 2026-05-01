@@ -145,8 +145,15 @@ async def dataprofiling(request: Request, parameter: Optional[str] = None):
 
 
 @app.get("/univariate-analysis", response_class=HTMLResponse, name="univariate-analysis")
-async def univariateanalysis(request: Request, name: Optional[str] = None):
-    return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
+async def univariateanalysis(request: Request, parameter: Optional[str] = None):
+
+    return templates.TemplateResponse(
+        request=request, 
+        name="univariate-analysis.html",
+        context={
+            "parameter":parameter
+            }
+        )
 
 @app.get("/bivariate-analysis", response_class=HTMLResponse, name="bivariate-analysis")
 async def bivariateanalysis(request: Request, name: Optional[str] = None):
