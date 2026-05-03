@@ -2,6 +2,13 @@ import pandas as pd
 import numpy as np
 from tabulate import tabulate
 import statistics
+from scipy.stats import skew
+from scipy.stats import kurtosis
+from scipy.stats import tiecorrect, rankdata
+from scipy.stats import shapiro
+from scipy.stats import chisquare
+from scipy.stats import wilcoxon
+
 
 class Descriptive:
     def pdread(self, pfname, **kwargs):
@@ -13,15 +20,39 @@ class Descriptive:
         if numeric_only:
             pdf = pdf.select_dtypes(include=[np.number])
         
+        sem_manual = pdf.std(ddof=1) / np.sqrt(pdf.count())
+        kurtosis_val= kurtosis(pdf.select_dtypes(include='number'), axis=0, bias=False, nan_policy='omit')
+        tie_corr_factor= pdf.select_dtypes(include='number').apply(
+            lambda x: tiecorrect(rankdata(x.dropna()))
+            )
+        shapiro_result = pdf.apply(
+            lambda x: shapiro(x.dropna()) if len(x.dropna()) >= 3 else (None, None)
+            )
+        chi_result = pdf.apply(
+            lambda x: chisquare(x.dropna()) if len(x.dropna()) > 0 else (None, None)
+            )
+        wilcoxon_result = pdf.apply(
+            lambda x: wilcoxon(x.dropna()) if len(x.dropna()) >= 10 else (None, None)
+            )
         stats = pd.DataFrame({
             'Count': pdf.count(),
             'Min': pdf.min(),
             'Max': pdf.max(),
             'Mean': pdf.mean(),
-            'Std': pdf.std(),
             '25%': pdf.quantile(0.25),
             '50%': pdf.quantile(0.50),
-            '75%': pdf.quantile(0.75)
+            '75%': pdf.quantile(0.75),
+            'Population Std Dev': pdf.std(ddof=0),
+            'Population Variance': pdf.var(ddof=0),
+            'Sample Std Dev': pdf.std(ddof=1),
+            'Sample Variance': pdf.var(ddof=1),
+            'Standard Error of the Mean': sem_manual,
+            'Tie Correction Factor': tie_corr_factor,
+            'Skewness': pdf.skew(numeric_only=True),
+            'kurtosis': kurtosis_val,
+            'shapiro': None,
+            'chisquare': None,
+            'wilcoxon': None
         }).T
         return stats
     
@@ -41,12 +72,12 @@ class Descriptive:
                                         11:'Median Grouped',
                                         12:'Mode',
                                         13:'Multimode',
-                                        14:'Quantiles(0.25)',
-                                        15:'Quantiles(0.75)',
-                                        16:'Population standard deviation',
-                                        17:'Population variance',
-                                        18:'Sample standard deviation',
-                                        19:'Sample variance',
+                                        #14:'Quantiles(0.25)',
+                                        #15:'Quantiles(0.75)',
+                                        #16:'Population standard deviation',
+                                        #17:'Population variance',
+                                        #18:'Sample standard deviation',
+                                        #19:'Sample variance',
                                         #20:'Skewness',
                                         #21:'kurtosis',
                                         #22:'The standard error of the mean',
@@ -76,12 +107,12 @@ class Descriptive:
                 11:statistics.median_grouped(idf[cn]),
                 12:statistics.mode(idf[cn]),
                 13:statistics.multimode(idf[cn]),
-                14:statistics.quantiles(idf[cn])[0],
-                15:statistics.quantiles(idf[cn])[2],
-                16:statistics.pstdev(idf[cn]),
-                17:statistics.pvariance(idf[cn]),
-                18:statistics.stdev(idf[cn]),
-                19:statistics.variance(idf[cn]),
+                #14:statistics.quantiles(idf[cn])[0],
+                #15:statistics.quantiles(idf[cn])[2],
+                #16:statistics.pstdev(idf[cn]),
+                #17:statistics.pvariance(idf[cn]),
+                #18:statistics.stdev(idf[cn]),
+                #19:statistics.variance(idf[cn]),
                 
                 #20:scipy.stats.skew(idf[cn],axis=0, bias=True),
                 #21:scipy.stats.kurtosis(idf[cn],axis=0, bias=True),
