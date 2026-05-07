@@ -25,23 +25,15 @@ class Descriptive:
         tie_corr_factor= pdf.select_dtypes(include='number').apply(
             lambda x: tiecorrect(rankdata(x.dropna()))
             )
-        shapiro_result = pdf.apply(
-            lambda x: shapiro(x.dropna()) if len(x.dropna()) >= 3 else (None, None)
-            )
-        chi_result = pdf.apply(
-            lambda x: chisquare(x.dropna()) if len(x.dropna()) > 0 else (None, None)
-            )
-        wilcoxon_result = pdf.apply(
-            lambda x: wilcoxon(x.dropna()) if len(x.dropna()) >= 10 else (None, None)
-            )
+
         stats = pd.DataFrame({
             'Count': pdf.count(),
             'Min': pdf.min(),
             'Max': pdf.max(),
             'Mean': pdf.mean(),
-            '25%': pdf.quantile(0.25),
-            '50%': pdf.quantile(0.50),
-            '75%': pdf.quantile(0.75),
+            'Quantiles (25%)': pdf.quantile(0.25),
+            'Quantiles (50%)': pdf.quantile(0.50),
+            'Quantiles (75%)': pdf.quantile(0.75),
             'Population Std Dev': pdf.std(ddof=0),
             'Population Variance': pdf.var(ddof=0),
             'Sample Std Dev': pdf.std(ddof=1),
@@ -50,12 +42,14 @@ class Descriptive:
             'Tie Correction Factor': tie_corr_factor,
             'Skewness': pdf.skew(numeric_only=True),
             'kurtosis': kurtosis_val,
-            'shapiro': None,
-            'chisquare': None,
-            'wilcoxon': None
+            'shapiro': pdf.apply(lambda x: shapiro(x.dropna())[1]),
+            'chisquare': pdf.apply(lambda x: chisquare(x.dropna())[1]),
+            'wilcoxon': pdf.apply(lambda x: wilcoxon(x.dropna())[1]),
         }).T
+        #pd.options.display.float_format = '{:.5f}'.format
         return stats
     
+
     def dataanalysis(self, idf):
         colom_name=idf.columns
         df = pandas.DataFrame({'status':{

@@ -7,9 +7,46 @@
                          {{ request.scope.get("route").name.replace("-"," ").capitalize() }}
                      </div>
                     <div class="card-body table-responsive">
-                        
+                        <form action="#" method="get" enctype="multipart/form-data">
 
-                      
+                            <table class='table table-boardered'>
+                                 <tr>    
+                                    <td style="width:250px;">Filed Name</td>
+                                    <td>
+                                        <select name="field_name" class="form-control">
+                                         {% for col in column %}
+                                                <option value="{{col}}">{{col}}</option>
+                                         {% endfor %}
+                                        </select>
+                                    </td>
+                                 </tr>   
+                                 <tr>    
+                                    <td>Plot type</td>
+                                    <td>
+                                        <select name="plot_type" class="form-control">
+                                            <option value="histogram">Histogram</option>
+                                            <option value="boxplot">Boxplot</option>
+                                            <option value="violin">Violin</option>
+                                            <option value="strip">Strip</option>
+                                            <option value="ecdf">ECDF (Empirical Cumulative Distribution)</option>
+
+                                            <option value="bar">Bar Chart</option>
+                                            <option value="pie">Pie Chart</option>
+                                            <option value="funnel">Funnel Chart</option>
+                                        </select>
+                                    </td>
+                                 </tr> 
+                                 <tr>
+                                     <td colspan="2">
+                                         <button type="submit" class="btn btn-success"> <i class="bi bi-search"></i> Search</button>
+                                     </td>
+                                 </tr>
+
+                            </table>
+                        </form>
+                        {% if graph %}
+                            {{graph | safe}}
+                        {% endif %}
                     </div>
                 </div>
             </div>

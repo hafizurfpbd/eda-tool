@@ -13,6 +13,9 @@ from utils.json_handler import MetadataStore
 from utils.descriptive import Descriptive
 import pandas
 import statistics
+import plotly.express as px
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 app = FastAPI(Debug=True)
@@ -145,19 +148,128 @@ async def dataprofiling(request: Request, parameter: Optional[str] = None):
 
 
 @app.get("/univariate-analysis", response_class=HTMLResponse, name="univariate-analysis")
-async def univariateanalysis(request: Request, parameter: Optional[str] = None):
+async def univariateanalysis(request: Request):
+    project_file = json.load(open("metadata/assign-project.json"))
+
+    query_params = request.query_params
+    field_name=query_params.get("field_name")
+    plot_type=query_params.get("plot_type")
+
+    graph_html=None
+    if project_file:
+        source_file=os.path.join('uploads',project_file[0]['file_name'])
+        try:
+            pddata=pandas.read_csv(source_file, header=0)
+            if plot_type == 'histogram':
+                fig = px.histogram(pddata, x=field_name, title="Histogram")
+                graph_html = fig.to_html(full_html=False)
+            elif plot_type == 'boxplot':
+                fig = px.box(pddata,y=field_name, title="Boxplot")
+                graph_html = fig.to_html(full_html=False)
+            elif plot_type == 'violin':
+                fig = px.violin(pddata,y=field_name, title="Violin Plot")
+                graph_html = fig.to_html(full_html=False)
+            elif plot_type == 'strip':
+                fig = px.strip(pddata,y=field_name, title="Strip Plot")
+                graph_html = fig.to_html(full_html=False)
+            elif plot_type == 'ecdf':
+                fig = px.strip(pddata,x=field_name, title="ECDF (Empirical Cumulative Distribution)")
+                graph_html = fig.to_html(full_html=False)
+            
+            elif plot_type == 'bar':
+                fig = px.bar(pddata[field_name].value_counts().reset_index(), x=field_name, y="count", title="Bar Chart")
+                graph_html = fig.to_html(full_html=False)    
+            elif plot_type == 'pie':
+                fig = px.pie(pddata, names=field_name, title="Pie Chart")
+                graph_html = fig.to_html(full_html=False) 
+            elif plot_type == 'funnel':
+                fig = px.bar(pddata[field_name].value_counts().reset_index(), x="count", y=field_name, title="Funnel Chart")
+                graph_html = fig.to_html(full_html=False) 
+            else: 
+                fig = px.histogram(pddata, x=field_name, title="Histogram-others")
+                graph_html = fig.to_html(full_html=False)
+
+        except Exception as e:
+            message = f"Error reading file"
 
     return templates.TemplateResponse(
         request=request, 
         name="univariate-analysis.html",
         context={
-            "parameter":parameter
+            "column": pddata.columns,
+            "plot_type": plot_type,
+            "field_name": field_name,
+            "graph": graph_html
             }
         )
 
 @app.get("/bivariate-analysis", response_class=HTMLResponse, name="bivariate-analysis")
-async def bivariateanalysis(request: Request, name: Optional[str] = None):
-    return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
+async def bivariateanalysis(request: Request):
+    project_file = json.load(open("metadata/assign-project.json"))
+
+    query_params = request.query_params
+    field_name_x=query_params.get("field_name_x")
+    field_name_y=query_params.get("field_name_y")
+    plot_type=query_params.get("plot_type")
+
+    graph_html=None
+    if project_file:
+        source_file=os.path.join('uploads',project_file[0]['file_name'])
+        try:
+            pddata=pandas.read_csv(source_file, header=0)
+            if plot_type == 'scatter':
+                fig = px.scatter(pddata, x=field_name_x, y=field_name_y, title='Scatter Plot')
+                graph_html = fig.to_html(full_html=False)
+            elif plot_type == 'line':
+                fig = px.line(pddata, x=field_name_x, y=field_name_y, title='Line Plot')
+                graph_html = fig.to_html(full_html=False)
+            elif plot_type == 'density_heatmap':
+                fig = px.density_heatmap(pddata, x=field_name_x, y=field_name_y, title='Density Heatpmap')
+                graph_html = fig.to_html(full_html=False) 
+            elif plot_type == 'trendline':   #kaj kore na
+                fig = px.scatter(pddata, x=field_name_x, y=field_name_y, trendline="ols", title='Scatter with Trendline')
+                graph_html = fig.to_html(full_html=False)
+            elif plot_type == 'bar':
+                 fig = px.bar(pddata, x=field_name_x, y=field_name_y, title='Bar Chart')
+                 graph_html = fig.to_html(full_html=False) 
+            elif plot_type == 'violin':
+                fig = px.violin(pddata, x=field_name_x, y=field_name_y, title='Violin Plot')
+                graph_html = fig.to_html(full_html=False)
+            elif plot_type == 'box':
+                fig = px.box(pddata, x=field_name_x, y=field_name_y, title='Box Plot')
+                graph_html = fig.to_html(full_html=False)
+            elif plot_type == 'strip':   #kaj kore na 
+                fig = px.Strip(pddata, x=field_name_x, y=field_name_y, title='Strip Plot')
+                graph_html = fig.to_html(full_html=False)
+
+            elif plot_type == 'crosstab': #kaj kore na
+                ct = pd.crosstab(pddata[field_name_x], pddata[field_name_y], title='Heatmap (crosstab)')
+                fig = px.imshow(ct, text_auto=True)
+                graph_html = fig.to_html(full_html=False)
+            elif plot_type == 'histogram':
+                fig = px.histogram(pddata, x=field_name_x, color=field_name_y, barmode="group", title='Grouped Bar Chart')
+                graph_html = fig.to_html(full_html=False)
+            elif plot_type == 'sunburst':
+                fig = px.sunburst(pddata, path=[field_name_x,field_name_y], title='Sunburst Chart')
+                graph_html = fig.to_html(full_html=False)
+            else: 
+                graph_html = None
+
+        except Exception as e:
+            message = f"Error reading file"
+
+    return templates.TemplateResponse(
+        request=request, 
+        name="bivariate-analysis.html",
+        context={
+            "column": pddata.columns,
+            "plot_type": plot_type,
+            "field_name_x": field_name_x,
+            "field_name_y": field_name_y,
+            
+            "graph": graph_html
+            }
+        )
 
 
 @app.get("/multivariate-analysis", response_class=HTMLResponse, name="multivariate-analysis")

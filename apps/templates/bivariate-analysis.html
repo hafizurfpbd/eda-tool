@@ -7,8 +7,63 @@
                          {{ request.scope.get("route").name.replace("-"," ").capitalize() }}
                      </div>
                     <div class="card-body table-responsive">
-                        
+                            <form action="#" method="get" enctype="multipart/form-data">
+                            <table class='table table-boardered'>
+                                 <tr>    
+                                    <td style="width:250px;">Filed Name (X-axis)</td>
+                                    <td>
+                                        <select name="field_name_x" class="form-control">
+                                         {% for col in column %}
+                                                <option value="{{col}}">{{col}}</option>
+                                         {% endfor %}
+                                        </select>
+                                    </td>
+                                 </tr>
+                                 <tr>    
+                                    <td style="width:250px;">Filed Name (Y-axis)</td>
+                                    <td>
+                                        <select name="field_name_y" class="form-control">
+                                         {% for col in column %}
+                                                <option value="{{col}}">{{col}}</option>
+                                         {% endfor %}
+                                        </select>
+                                    </td>
+                                 </tr>     
+                                 <tr>    
+                                    <td>Plot type</td>
+                                    <td>
+                                        <select name="plot_type" class="form-control">
+                                            <optgroup label="Numerical vs Numerical">
+                                                <option value="scatter">Scatter Plot</option>
+                                                <option value="line">Line Plot</option>
+                                                <option value="density_heatmap">Density Heatmap</option>
+                                                <option value="trendline">Scatter with Trendline</option>
+                                            </optgroup>
+                                            <optgroup label="Categorical vs Numerical">
+                                                <option value="bar">Bar Chart</option>
+                                                <option value="violin">Violin Plot</option>
+                                                <option value="box">Box Plot </option>
+                                                <option value="strip">Strip Plot</option>
+                                            </optgroup>
+                                            <optgroup label="Categorical vs Categorical">
+                                                 <option value="crosstab">Heatmap (crosstab)</option>
+                                                <option value="histogram">Grouped Bar Chart (Histogram)</option>
+                                                <option value="sunburst">Sunburst Chart</option>
+                                            </optgroup>
+                                         </select>
+                                    </td>
+                                 </tr> 
+                                 <tr>
+                                     <td colspan="2">
+                                         <button type="submit" class="btn btn-success"> <i class="bi bi-search"></i> Search</button>
+                                     </td>
+                                 </tr>
 
+                            </table>
+                        </form>
+                        {% if graph %}
+                            {{graph | safe}}
+                        {% endif %}
                       
                     </div>
                 </div>
