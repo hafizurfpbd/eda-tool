@@ -327,7 +327,10 @@ async def multivariateanalysis(request: Request):
 
 @app.get("/outier-detection", response_class=HTMLResponse, name="outier-detection")
 async def outierdetection(request: Request, name: Optional[str] = None):
-    return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
+    return templates.TemplateResponse(
+        request=request,
+        name="outier-detection.html",
+        context={"name":name})
 
 @app.get("/visualization", response_class=HTMLResponse, name="visualization")
 async def visualization(request: Request, name: Optional[str] = None):
