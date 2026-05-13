@@ -79,10 +79,10 @@
        {% endif %}
       
 
-      {% if request.scope.get("route").name == 'outier-detection' %}
-      <a href="{{ url_for('outier-detection') }}" class="list-group-item list-group-item-success list-group-item-action active"> <i class="bi bi-check2-square"></i> Outlier Detection </a>
+      {% if request.scope.get("route").name == 'outlier-detection' %}
+      <a href="{{ url_for('outlier-detection') }}" class="list-group-item list-group-item-success list-group-item-action active"> <i class="bi bi-check2-square"></i> Outlier Detection </a>
        {% else %}
-      <a href="{{ url_for('outier-detection') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Outlier Detection </a>
+      <a href="{{ url_for('outlier-detection') }}" class="list-group-item list-group-item-success list-group-item-action"> <i class="bi bi-check2-square"></i> Outlier Detection </a>
        {% endif %}
       
 

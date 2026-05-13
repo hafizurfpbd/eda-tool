@@ -7,8 +7,48 @@
                     {{ request.scope.get("route").name.replace("-"," ").capitalize() }}
                 </div>
                 <div class="card-body table-responsive">
+                    <form action="#" method="GET" enctype="multipart/form-data">
+                    <table class='table table-boardered'>
+                        <tr>
+                            <td style="width:300px;">
+                                Select Fields
+                            </td>
+                            <td style="width:200px;">
+                                Method
+                            </td>
+                            <td style="width:200px;">
+                                Threshold
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select name="field_name" class="form-control" required> 
+                                {% for col in column %}
+                                    <option value="{{col}}">{{col}}</option>
+                                {% endfor %}
+                                </select>   
+                            </td>
+                            <td>
+                                <select name="method_name" class="form-control" required> 
+                                    <option value="Z-Score">Z-Score</option>
+                                    <option value="IQR">IQR</option>
+                                    <option value="Modified-Z-Score">Modified Z-Score</option>
+                                </select>   
+                            </td>
+                            <td>
+                                <input type="text" name="threshold" required>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-success"> <i class="bi bi-search"></i>RUN</button>
+                            </td>
+                        </tr>
 
-                    {{coloum}}
+                    </table>
+                </form>
+
+
+                   
 
                 </div>
             </div>

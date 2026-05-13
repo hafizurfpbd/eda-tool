@@ -325,7 +325,7 @@ async def multivariateanalysis(request: Request):
         )
 
 
-@app.get("/outier-detection", response_class=HTMLResponse, name="outier-detection")
+@app.get("/outlier-detection", response_class=HTMLResponse, name="outlier-detection")
 async def outierdetection(request: Request):
     project_file = json.load(open("metadata/assign-project.json"))
     query_params = list(request.query_params.keys())
@@ -342,10 +342,9 @@ async def outierdetection(request: Request):
     
     return templates.TemplateResponse(
         request=request,
-        name="outier-detection.html",
+        name="outlier-detection.html",
         context={
             "column": pddata.columns,
-            
         })
 
 @app.get("/visualization", response_class=HTMLResponse, name="visualization")
