@@ -20,6 +20,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+from scipy import stats
+from typing import List, Optional, Literal
 
 
 app = FastAPI(Debug=True)
@@ -328,15 +330,64 @@ async def multivariateanalysis(request: Request):
 @app.get("/outlier-detection", response_class=HTMLResponse, name="outlier-detection")
 async def outierdetection(request: Request):
     project_file = json.load(open("metadata/assign-project.json"))
-    query_params = list(request.query_params.keys())
-    graph_html=None
+    query_params = request.query_params
+    
+    OutlierResult=None
+
     if project_file:
         source_file=os.path.join('uploads',project_file[0]['file_name'])
         try:
             pddata=pandas.read_csv(source_file, header=0)
             numeric_df = pddata.select_dtypes(include=[np.number])
-             # Correlation Matrix
+            
+            #series = numeric_df[query_params.get('field_name')]
+            series = numeric_df[field_name].dropna().reset_index(drop=True)
+            outlier_mask = pd.Series([False] * len(series))
+ 
+            if query_params.get('method_name') == "zscore":
+                threshold = query_params.get('threshold') or 3.0
+                z_scores = np.abs(stats.zscore(series))
+                outlier_mask = z_scores > threshold
+         
+            elif query_params.get('method_name') == "iqr":
+                threshold = query_params.get('threshold') or 1.5
+                Q1 = series.quantile(0.25)
+                Q3 = series.quantile(0.75)
+                IQR = Q3 - Q1
+                lower = Q1 - threshold * IQR
+                upper = Q3 + threshold * IQR
+                outlier_mask = (series < lower) | (series > upper)
+         
+            elif query_params.get('method_name') == "modified_zscore":
+                threshold = query_params.get('threshold') or 3.5
+                median = series.median()
+                mad = np.median(np.abs(series - median))
+                modified_z = 0.6745 * (series - median) / (mad if mad != 0 else 1e-10)
+                outlier_mask = np.abs(modified_z) > threshold
            
+            outlier_indices = list(numeric_df[outlier_mask].index.astype(int))
+            outlier_values = list(series[outlier_mask])
+            inlier_values = list(series[~outlier_mask])
+
+            OutlierResult={
+                "total_points": len(series),
+                "outlier_count": int(outlier_mask.sum()),
+                "outlier_indices": outlier_indices,
+                "outlier_values": outlier_values,
+                "inlier_values": inlier_values,
+                "method": query_params.get('method_name'),
+                "threshold_used": query_params.get('threshold'),
+                "stats": {
+                    "mean": round(float(series.mean()), 4),
+                    "std": round(float(series.std()), 4),
+                    "median": round(float(series.median()), 4),
+                    "min": round(float(series.min()), 4),
+                    "max": round(float(series.max()), 4),
+                    "q1": round(float(series.quantile(0.25)), 4),
+                    "q3": round(float(series.quantile(0.75)), 4),
+                }
+            }
+
         except Exception as e:
             message = f"Error reading file"
     
@@ -345,6 +396,7 @@ async def outierdetection(request: Request):
         name="outlier-detection.html",
         context={
             "column": pddata.columns,
+            "OutlierResult": outlier_mask.tolist()
         })
 
 @app.get("/visualization", response_class=HTMLResponse, name="visualization")

@@ -31,16 +31,16 @@
                             </td>
                             <td>
                                 <select name="method_name" class="form-control" required> 
-                                    <option value="Z-Score">Z-Score</option>
-                                    <option value="IQR">IQR</option>
-                                    <option value="Modified-Z-Score">Modified Z-Score</option>
+                                    <option value="zscore">Z-Score</option>
+                                    <option value="iqr">IQR</option>
+                                    <option value="modified_zscore">Modified Z-Score</option>
                                 </select>   
                             </td>
                             <td>
-                                <input type="text" name="threshold" required>
+                                <input type="text" name="threshold" required value=0 >
                             </td>
                             <td>
-                                <button type="submit" class="btn btn-success"> <i class="bi bi-search"></i>RUN</button>
+                                <button type="submit" class="btn btn-success"> <i class="bi bi-play-btn"></i> RUN</button>
                             </td>
                         </tr>
 
@@ -48,7 +48,7 @@
                 </form>
 
 
-                   
+                   {{OutlierResult}}
 
                 </div>
             </div>
