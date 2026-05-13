@@ -1,18 +1,43 @@
 {% include 'header.html' %}
-    <div class="panel-body">         
-        <div class='row'>                     
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header bg-info text-white" style='font-size:17px;font-weight:bold;'>
-                         {{ request.scope.get("route").name.replace("-"," ").capitalize() }}
-                     </div>
-                    <div class="card-body table-responsive">
-                        
+<div class="panel-body">
+    <div class='row'>
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header bg-info text-white" style='font-size:17px;font-weight:bold;'>
+                    {{ request.scope.get("route").name.replace("-"," ").capitalize() }}
+                </div>
 
-                      
-                    </div>
+                <form action="#" method="GET" enctype="multipart/form-data">
+                    <table class='table table-boardered'>
+                        <tr>
+                            <td style="width:300px;">
+                                <label for="field_lists">Select Fields</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {% for col in column %}
+                                <input type="checkbox" name="{{col}}" value="1"
+                                    style="margin-left:15px;margin-right:5px;">{{col}}
+                                {% endfor %}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <button type="submit" class="btn btn-success"> <i class="bi bi-search"></i>
+                                    Submit</button>
+                            </td>
+                        </tr>
+
+                    </table>
+                </form>
+
+                <div class="card-body table-responsive">
+                    {{graph|safe}}
                 </div>
             </div>
-        </div>           
+        </div>
     </div>
+</div>
 {% include 'footer.html' %}

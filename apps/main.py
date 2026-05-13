@@ -13,9 +13,13 @@ from utils.json_handler import MetadataStore
 from utils.descriptive import Descriptive
 import pandas
 import statistics
+# pyrefly: ignore [missing-import]
 import plotly.express as px
 import seaborn as sns
+# pyrefly: ignore [missing-import]
 import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
 
 
 app = FastAPI(Debug=True)
@@ -243,7 +247,7 @@ async def bivariateanalysis(request: Request):
                 graph_html = fig.to_html(full_html=False)
 
             elif plot_type == 'crosstab': #kaj kore na
-                ct = pd.crosstab(pddata[field_name_x], pddata[field_name_y], title='Heatmap (crosstab)')
+                ct = pddata.crosstab(pddata[field_name_x], pddata[field_name_y])
                 fig = px.imshow(ct, text_auto=True)
                 graph_html = fig.to_html(full_html=False)
             elif plot_type == 'histogram':
@@ -273,8 +277,52 @@ async def bivariateanalysis(request: Request):
 
 
 @app.get("/multivariate-analysis", response_class=HTMLResponse, name="multivariate-analysis")
-async def multivariateanalysis(request: Request, name: Optional[str] = None):
-    return templates.TemplateResponse(request=request, name="dashboard.html",context={"name":name})
+async def multivariateanalysis(request: Request):
+    project_file = json.load(open("metadata/assign-project.json"))
+    query_params = list(request.query_params.keys())
+    graph_html=None
+    if project_file:
+        source_file=os.path.join('uploads',project_file[0]['file_name'])
+        pddatax=pandas.read_csv(source_file, header=0)
+        try:
+            if query_params:
+                pddata=pandas.read_csv(source_file, header=0,usecols=query_params)
+            else:
+                pddata=pandas.read_csv(source_file, header=0)
+            numeric_df = pddata.select_dtypes(include=[np.number])
+             # Correlation Matrix
+            corr = numeric_df.corr()
+            n_cols = len(corr) 
+            # Plotly Heatmap
+            fig = px.imshow(
+                corr,
+                text_auto=True,
+                color_continuous_scale='RdBu_r'
+            )
+            fig.update_layout(
+            width=1100,
+            height= 900,
+            margin=dict(
+                l=0,
+                r=0,
+                t=20,
+                b=0
+            ))
+            # Convert Figure to HTML
+            graph_html = fig.to_html(full_html=False,config={"responsive": True})
+
+        except Exception as e:
+            message = f"Error reading file"
+    return templates.TemplateResponse(
+        request=request, 
+        name="multivariate-analysis.html",
+        context={
+            "column": pddatax.columns,
+            "correlation": corr.to_html(classes="table table-striped custom-table"),
+            "graph": graph_html,
+            'query_params':query_params
+            }
+        )
 
 
 @app.get("/outier-detection", response_class=HTMLResponse, name="outier-detection")
