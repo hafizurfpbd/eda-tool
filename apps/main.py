@@ -326,11 +326,27 @@ async def multivariateanalysis(request: Request):
 
 
 @app.get("/outier-detection", response_class=HTMLResponse, name="outier-detection")
-async def outierdetection(request: Request, name: Optional[str] = None):
+async def outierdetection(request: Request):
+    project_file = json.load(open("metadata/assign-project.json"))
+    query_params = list(request.query_params.keys())
+    graph_html=None
+    if project_file:
+        source_file=os.path.join('uploads',project_file[0]['file_name'])
+        try:
+            pddata=pandas.read_csv(source_file, header=0)
+            numeric_df = pddata.select_dtypes(include=[np.number])
+             # Correlation Matrix
+           
+        except Exception as e:
+            message = f"Error reading file"
+    
     return templates.TemplateResponse(
         request=request,
         name="outier-detection.html",
-        context={"name":name})
+        context={
+            "column": pddata.columns,
+            
+        })
 
 @app.get("/visualization", response_class=HTMLResponse, name="visualization")
 async def visualization(request: Request, name: Optional[str] = None):
